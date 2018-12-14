@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <% include partials/_header %>
+  <a href="urls/new">Add URL</a>
+  <ul>
+  <% for (var key in urls) { %>
+      <% if (urls.hasOwnProperty(key)) { %>
+        <li><%= urls[key] %> - <%= key %></li>
+      <% } %>
+    <% } %>
+  </ul>
+</body>
+</html>
