@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
   <% include partials/_header %>
-  <ul>
+  <ul class="list-group">
   <% for (var key in urls) { %>
       <% if (urls.hasOwnProperty(key)) { %>
         <% if (key === shortURL) { %>
-          <li><%= urls[key] %> - <%= key %></li>
+          <li class="list-group-item">
+          <h3>Tiny URL: <%= key %></h3>
+            <form method="POST" action="/urls/<%= key %>/update">
+              <input id="updatedLongURL" type="text" name="lupdatedLongURL" placeholder="<%= urls[key] %>" class="form-control form-control-sm">
+              <input type="submit" value="Update" class="btn btn-primary">
+            </form>
+          </li>
         <% } %>
       <% } %>
     <% } %>
