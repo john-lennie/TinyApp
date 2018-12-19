@@ -1,15 +1,13 @@
 <br>
 
-<% if (username !== "") { %>
-  <%= username %>
+<% if (user.email) { %>
+  <%= user.email %>
   <form action="/logout" method="POST">
     <input type="submit" value="Logout">
   </form>
 <% } else { %>
-  <form action="/login" method="POST">
-    <input id="username" type="text" name="username" placeholder="username">
-    <input type="submit" value="Submit">
-  </form>
+  <a href="../register">Register</a>
+  <a href="../login">login</a>
 <% } %>
 
 <h1>TinyApp</h1>

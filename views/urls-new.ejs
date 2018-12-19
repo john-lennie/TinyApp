@@ -5,10 +5,10 @@
   </head>
   <body>
     <% include partials/_header %>
-    <form action="/urls" method="POST">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://">
-      <input type="submit" value="Submit">
+    <form action="/urls" method="POST" class="form-inline">
+      <label for="longURL">Enter a URL:</label><br>
+      <input id="longURL" type="text" name="longURL" placeholder="http://" class="form-control"><br>
+      <input type="submit" value="Submit" class="btn btn-primary">
     </form>
   </body>
 </html>
