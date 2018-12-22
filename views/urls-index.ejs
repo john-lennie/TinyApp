@@ -6,18 +6,28 @@
 </head>
 <body>
   <% include partials/_header %>
-  <ul class="list-group">
-  <% for (var key in urls) { %>
-      <% if (urls.hasOwnProperty(key)) { %>
-        <li class="list-group-item">
-          <h3>Tiny URL: <%= key %> - <%= urls[key] %></h3>
-          <a href="urls/<%= key %>" class="btn btn-primary">Update</a>
-          <form method="POST" action="/urls/<%= key %>/delete">
-            <input type="submit" value="Delete" class="btn btn-primary">
-          </form>
-        </li>
+
+  <% if (isUserLoggedIn === false) { %>
+    <p>Please register or login to view urls</p>
+  <% } %>
+
+  <% if (isUserLoggedIn === true) { %>
+    <ul class="list-group">
+    <% for (var key in currentUserUrls) { %>
+        <% if (currentUserUrls.hasOwnProperty(key)) { %>
+          <li class="list-group-item">
+            <h3>Tiny URL: <%= key %> - <%= currentUserUrls[key] %></h3>
+            <a href="urls/<%= key %>" class="btn btn-primary">Update</a>
+            <form method="POST" action="/urls/<%= key %>/delete">
+              <input type="submit" value="Delete" class="btn btn-primary">
+            </form>
+          </li>
+        <% } %>
       <% } %>
+    </ul>
+    <% if (currentUserHasUrls === false) { %>
+       <p>No urls yet.</p>
     <% } %>
-  </ul>
+  <% } %>
 </body>
 </html>

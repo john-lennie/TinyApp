@@ -13,7 +13,7 @@
           <li class="list-group-item">
           <h3>Tiny URL: <%= key %></h3>
             <form method="POST" action="/urls/<%= key %>/update">
-              <input id="updatedLongURL" type="text" name="lupdatedLongURL" placeholder="<%= urls[key] %>" class="form-control form-control-sm">
+              <input id="updatedLongURL" type="text" name="updatedLongURL" placeholder="<%= urls[key].url %>" class="form-control form-control-sm">
               <input type="submit" value="Update" class="btn btn-primary">
             </form>
           </li>
