@@ -1,10 +1,13 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 const app = express();
 const PORT = 8080; // default port 8080
-app.use(cookieParser());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1']
+}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
@@ -14,6 +17,12 @@ let userDatabase = {
     "name": "John Lennie",
     "email": "johnanthonylennie@gmail.com",
     "password": "$2b$10$CjAoOMLv3gPVqH0Q.ENdQ.wTJs538NJQoDHcedxpTVyGfI7Sdcsq."
+  },
+  "y6kutz": {
+    "id": "y6kutz",
+    "name": "Heather Lennie",
+    "email": "heather@freereadingprogram.com",
+    "password": "$2b$10$3AXAed7H2UuzTV8W88IbiOsIeGBHF49dZ2ZVGZuXmiQjZCA/dAUBO"
   }
 }
 
@@ -23,11 +32,11 @@ let urlDatabase = {
     "url": "http://www.lighthouselabs.ca"
   },
   "9sm5xK": {
-    "userID": "7ef29t",
+    "userID": "y6kutz",
     "url": "http://www.google.com"
   },
   "fc8gnb": {
-    "userID": "36m44b",
+    "userID": "y6kutz",
     "url": "https://expressjs.com/en/api.html#req.get"
   }
 }
@@ -49,9 +58,9 @@ function generateRandomString() {
 }
 
 function setUser(req) {
-  if (req.cookies['userId']) {
+  if (req.session.user_id) {
     templateVars.isUserLoggedIn = true;
-    templateVars.currentUser = req.cookies['userId'];
+    templateVars.currentUser = req.session.user_id;
   }
 }
 
@@ -94,7 +103,7 @@ app.post("/register", (req, res) => {
   }
   templateVars.currentUser = userId;
   console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
-  res.cookie('userId', userId);
+  req.session.user_id = userId;
   res.redirect(302, `/urls`);
 });
 
@@ -110,7 +119,7 @@ app.post("/login", (req, res) => {
       if (userDatabase[key].email === req.body.email && bcrypt.compareSync(req.body.password, userDatabase[key].password)) {
         templateVars.currentUser = key;
         match = true;
-        res.cookie('userId', key);
+        req.session.user_id = userDatabase[key].id;
       }
     }
   }
@@ -123,7 +132,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie('userId');
+  req.session = null;
   templateVars.currentUser = "";
   templateVars.isUserLoggedIn = false;
   templateVars.currentUserUrls = {};
@@ -133,7 +142,7 @@ app.post("/logout", (req, res) => {
 
 app.get("/urls", (req, res) => {
   setUser(req);
-  urlsForUser(req.cookies['userId']);
+  urlsForUser(req.session.user_id);
   console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
   res.render("urls-index", templateVars);
 });
@@ -142,7 +151,7 @@ app.post("/urls", (req, res) => {
   var shortURL = generateRandomString();
   console.log(urlDatabase[shortURL]);
   urlDatabase[shortURL] = {
-    userID: req.cookies['userId'],
+    userID: req.session.user_id,
     url: req.body.longURL
   }
   res.redirect(302, `/urls`);
@@ -158,7 +167,7 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   setUser(req);
-  urlsForUser(req.cookies['userId']);
+  urlsForUser(req.session.user_id);
   if (templateVars.urls[req.params.id].userID !== templateVars.currentUser) {
     res.status(403).send("url does not belong to you")
   }
@@ -170,7 +179,10 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls/:id/update", (req, res) => {
   var shortURL = req.params.id;
   var updatedLongURL = req.body.updatedLongURL;
-  urlDatabase[shortURL] = updatedLongURL;
+  urlDatabase[shortURL] = {
+    userID: req.session.user_id,
+    url: updatedLongURL
+  }
   res.redirect(302, `/urls`);
 });
 
