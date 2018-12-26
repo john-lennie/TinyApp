@@ -12,33 +12,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 let userDatabase = {
-  "l21nf1": {
-    "id": "l21nf1",
-    "name": "John Lennie",
-    "email": "johnanthonylennie@gmail.com",
-    "password": "$2b$10$CjAoOMLv3gPVqH0Q.ENdQ.wTJs538NJQoDHcedxpTVyGfI7Sdcsq."
-  },
-  "y6kutz": {
-    "id": "y6kutz",
-    "name": "Heather Lennie",
-    "email": "heather@freereadingprogram.com",
-    "password": "$2b$10$3AXAed7H2UuzTV8W88IbiOsIeGBHF49dZ2ZVGZuXmiQjZCA/dAUBO"
-  }
 }
 
 let urlDatabase = {
-  "b2xVn2": {
-    "userID": "l21nf1",
-    "url": "http://www.lighthouselabs.ca"
-  },
-  "9sm5xK": {
-    "userID": "y6kutz",
-    "url": "http://www.google.com"
-  },
-  "fc8gnb": {
-    "userID": "y6kutz",
-    "url": "https://expressjs.com/en/api.html#req.get"
-  }
 }
 
 let templateVars = {
@@ -66,6 +42,8 @@ function setUser(req) {
 
 function urlsForUser(id) {
   console.log(id);
+  templateVars.currentUserUrls = {};
+  templateVars.currentUserHasUrls = false;
   for (var key in urlDatabase) {
     if (urlDatabase.hasOwnProperty(key)) {
       if (id === urlDatabase[key].userID) {
@@ -171,6 +149,7 @@ app.get("/urls/:id", (req, res) => {
   if (templateVars.urls[req.params.id].userID !== templateVars.currentUser) {
     res.status(403).send("url does not belong to you")
   }
+  templateVars.link = urlDatabase[req.params.id].url;
   templateVars.shortURL = req.params.id;
   console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
   res.render("urls-show", templateVars);
@@ -190,6 +169,11 @@ app.post("/urls/:id/delete", (req, res) => {
   var shortURL = req.params.id;
   delete urlDatabase[shortURL];
   res.redirect(302, `/urls`);
+});
+
+app.get("/:shortURL", (req, res) => {
+  let longURL = urlDatabase[req.params.shortURL].url;
+  res.redirect(longURL);
 });
 
 app.listen(PORT, () => {

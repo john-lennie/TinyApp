@@ -2,24 +2,21 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.css" />
 </head>
 <body>
+
   <% include partials/_header %>
+  <h2>Update Url</h2><br>
   <ul class="list-group">
-  <% for (var key in urls) { %>
-      <% if (urls.hasOwnProperty(key)) { %>
-        <% if (key === shortURL) { %>
-          <li class="list-group-item">
-          <h3>Tiny URL: <%= key %></h3>
-            <form method="POST" action="/urls/<%= key %>/update">
-              <input id="updatedLongURL" type="text" name="updatedLongURL" placeholder="<%= urls[key].url %>" class="form-control form-control-sm">
-              <input type="submit" value="Update" class="btn btn-primary">
-            </form>
-          </li>
-        <% } %>
-      <% } %>
-    <% } %>
+    <li class="list-group-item">
+    <a href="<%= link %>" target="_blank">http://localhost:8080/<%= shortURL %></a>
+      <form method="POST" action="/urls/<%= shortURL %>/update">
+        <input id="updatedLongURL" type="text" name="updatedLongURL" placeholder="<%= link %>" class="form-control form-control-sm"><br>
+        <input type="submit" value="Update" class="btn btn-primary">
+      </form>
+    </li>
   </ul>
+
 </body>
 </html>

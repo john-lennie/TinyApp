@@ -1,40 +1,95 @@
-<br>
+<header>
 
-<% if (isUserLoggedIn === true) { %>
+  <span class="logo">TinyApp</span>
 
-  <% for (var key in users) { %>
-    <% if (users.hasOwnProperty(key)) { %>
-      <% if (key === currentUser) { %>
-        <%= users[key].name %>
+  <% if (isUserLoggedIn === true) { %>
+
+    <nav>
+      <a href="../urls">My URLs</a>
+      <a href="../urls/new">Add URL</a>
+    </nav>
+
+    <form action="/logout" method="POST" class="form-inline float-right">
+      <input type="submit" value="Logout" class="btn btn-primary">
+    </form>
+
+    <% for (var key in users) { %>
+      <% if (users.hasOwnProperty(key)) { %>
+        <% if (key === currentUser) { %>
+          <span class="float-right"><%= users[key].name %></span>
+        <% } %>
       <% } %>
     <% } %>
+
+  <% } else { %>
+
+    <a href="../login" class="btn btn-primary float-right">login</a>
+    <a href="../register" class="btn btn-primary float-right">Register</a>
+
   <% } %>
 
-  <form action="/logout" method="POST" class="form-inline">
-    <input type="submit" value="Logout" class="btn btn-primary">
-  </form>
-
-<% } else { %>
-
-  <a href="../register">Register</a>
-  <a href="../login">login</a>
-
-<% } %>
-
-<h1>TinyApp</h1>
-
-<br>
-
-<a href="../urls">My URL's</a>
-<a href="../urls/new">Add URL</a>
-
-<br><br>
+</header>
 
 <style type="text/css">
+
   body {
-    padding: 0 30px;
+    margin-top: 53px;
+    padding: 20px 25px;;
+    font-size: 0.8rem;
   }
-  input.btn {
-    margin-top: 10px;
+
+  header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background: #fff;
+    z-index: 2;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0 10px 10px;
+    overflow: hidden;
+  }
+  header .logo {
+    line-height: 32px;
+    margin-left: 5px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000;
+  }
+  nav {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  nav a {
+    margin-right: 10px;
+  }
+  header .btn {
+    margin-top: 0px !important;
+    margin-right: 10px;
+  }
+  header span {
+    line-height: 32px;
+    margin-right: 10px;
+    font-size: 12px;
+    color: #444;
+  }
+  .btn {
+    font-size: 12px;
+  }
+  .list-group-item {
+    line-height: 32px;
+    padding: 11px 0 11px 21px;
+  }
+  .update-btn {
+    margin-right: 10px;
+  }
+  .form-inline input {
+    margin-right: 10px;
+  }
+  .form-control {
+    height: 2rem;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 </style>

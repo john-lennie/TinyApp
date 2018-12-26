@@ -2,25 +2,26 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.css" />
 </head>
 <body>
   <% include partials/_header %>
 
   <% if (isUserLoggedIn === false) { %>
-    <p>Please register or login to view urls</p>
+    <p>Please register or login to shorten URLs.</p>
   <% } %>
 
   <% if (isUserLoggedIn === true) { %>
+    <h2>My Urls</h2><br>
     <ul class="list-group">
     <% for (var key in currentUserUrls) { %>
         <% if (currentUserUrls.hasOwnProperty(key)) { %>
           <li class="list-group-item">
-            <h3>Tiny URL: <%= key %> - <%= currentUserUrls[key] %></h3>
-            <a href="urls/<%= key %>" class="btn btn-primary">Update</a>
-            <form method="POST" action="/urls/<%= key %>/delete">
+            <a href="<%= currentUserUrls[key] %>" target="_blank">http://localhost:8080/<%= key %></a> - <%= currentUserUrls[key] %>
+            <form method="POST" action="/urls/<%= key %>/delete" class="form-inline float-right">
               <input type="submit" value="Delete" class="btn btn-primary">
             </form>
+            <a href="urls/<%= key %>" class="btn btn-primary float-right update-btn">Update</a>
           </li>
         <% } %>
       <% } %>
