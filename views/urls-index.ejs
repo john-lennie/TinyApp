@@ -17,7 +17,7 @@
     <% for (var key in currentUserUrls) { %>
         <% if (currentUserUrls.hasOwnProperty(key)) { %>
           <li class="list-group-item">
-            <a href="<%= currentUserUrls[key] %>" target="_blank">http://localhost:8080/<%= key %></a> - <%= currentUserUrls[key] %>
+            <a href="http://localhost:8080/<%= key %>" target="_blank">http://localhost:8080/<%= key %></a> - <%= currentUserUrls[key] %>
             <form method="POST" action="/urls/<%= key %>/delete" class="form-inline float-right">
               <input type="submit" value="Delete" class="btn btn-primary">
             </form>

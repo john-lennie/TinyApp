@@ -12,9 +12,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 let userDatabase = {
+  "7vm7gy": {
+    "id": "7vm7gy",
+    "name": "John Lennie",
+    "email": "johnanthonylennie@gmail.com",
+    "password": "$2b$10$UUR7T/s5Mg54AnL42CVLLOv1yIHh8Z0nS8KJ/2Z846VWwFXUDA2wC"
+  }
 }
 
 let urlDatabase = {
+  "gambvk": {
+    "userID": "7vm7gy",
+    "url": "https://github.com/john-lennie/TinyApp"
+  }
 }
 
 let templateVars = {
@@ -53,6 +63,13 @@ function urlsForUser(id) {
     }
   }
 }
+
+app.get("/", (req, res) => {
+  setUser(req);
+  urlsForUser(req.session.user_id);
+  console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
+  res.render("urls-index", templateVars);
+});
 
 app.get("/register", (req, res) => {
   setUser(req);
@@ -151,6 +168,7 @@ app.get("/urls/:id", (req, res) => {
   }
   templateVars.link = urlDatabase[req.params.id].url;
   templateVars.shortURL = req.params.id;
+  templateVars.visits = urlDatabase[req.params.id].visits;
   console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
   res.render("urls-show", templateVars);
 });
@@ -173,6 +191,8 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL].url;
+  urlDatabase[req.params.shortURL].visits = (urlDatabase[req.params.shortURL].visits+1) || 1;
+  console.log(`templateVars: ${JSON.stringify(templateVars, null, 2)}`);
   res.redirect(longURL);
 });
 

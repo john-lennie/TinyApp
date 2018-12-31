@@ -10,11 +10,12 @@
   <h2>Update Url</h2><br>
   <ul class="list-group">
     <li class="list-group-item">
-    <a href="<%= link %>" target="_blank">http://localhost:8080/<%= shortURL %></a>
+    <a href="http://localhost:8080/<%= shortURL %>" target="_blank">http://localhost:8080/<%= shortURL %></a>
       <form method="POST" action="/urls/<%= shortURL %>/update">
-        <input id="updatedLongURL" type="text" name="updatedLongURL" placeholder="<%= link %>" class="form-control form-control-sm"><br>
+        <input id="updatedLongURL" type="text" name="updatedLongURL" placeholder="<%= link %>" class="form-control form-control-sm">
         <input type="submit" value="Update" class="btn btn-primary">
       </form>
+      <span>Visits: <%= visits %></span>
     </li>
   </ul>
 
