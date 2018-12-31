@@ -11,4 +11,4 @@ A Node.js-HTTP-Server that allows users to shorten urls.
 -body-parser
 -cookie-sesion
 
-![](https://github.com/john-lennie/TinyApp/blob/master/docs/urls.png)
+![](https://github.com/john-lennie/TinyApp/blob/master/docs/screenshot.png)
